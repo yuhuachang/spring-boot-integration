@@ -1,0 +1,50 @@
+spring.h2:
+  console.enabled: true
+  driverClassName: org.h2.Driver
+  url: jdbc:h2:mem:testdb
+  username: sa
+  password:
+management.security.enabled: false
+
+logging.level.bitronix: DEBUG
+logging.level.org.springframework.jdbc.core: DEBUG
+---
+spring:
+  profiles: prod
+server:
+  port: 8443
+  ssl.enabled: yes
+management:
+  port: 9400
+bitronix.tm:
+  serverId: demo-app-dev-prod
+  journal.disk:
+    logPart1Filename: ~/log/prod/btm1.tlog
+    logPart2Filename: ~/log/prod/btm2.tlog
+---
+spring:
+  profiles: qa
+server:
+  port: 8444
+  ssl:
+    enabled: yes
+management:
+  port: 9401
+bitronix.tm:
+  serverId: demo-app-dev-qa
+  journal.disk:
+    logPart1Filename: ~/log/qa/btm1.tlog
+    logPart2Filename: ~/log/qa/btm2.tlog
+---
+spring:
+  profiles: dev,demo,local
+server:
+  port: 8444
+  ssl.enabled: no
+management:
+  port: 9401
+bitronix.tm:
+  serverId: demo-app-dev
+logging:
+  level:
+    org.springframework.jdbc.datasource.DataSourceUtils: DEBUG
